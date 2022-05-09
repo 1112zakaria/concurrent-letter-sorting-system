@@ -25,6 +25,11 @@ static pid_t child_pids[3];
 static int lower, upper;
 static int DEBUG_ENABLED;
 
+union semun {
+    int val;
+    struct semi_ds *buf;
+    unsigned short *array;
+};
 
 int main() {
     int num_inputs = 6;
