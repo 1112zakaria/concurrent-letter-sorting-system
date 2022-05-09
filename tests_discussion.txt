@@ -1,0 +1,11 @@
+Discussion of Test Results
+
+I picked as many 7-letter wors that I thought were
+appropriate. There are 6 test words with their
+expected outputs. The expected outputs were 
+generated using an online tool and we will assume
+that it functions correctly.
+
+I ran the tests several times and they are all 
+running successfully. If they failed, the assert()
+macro would abort the program.

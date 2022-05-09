@@ -1,0 +1,14 @@
+# Extensionless files and irrelevant folders
+*
+!/**/
+!*.*
+!Makefile
+*/
+
+# Other file types & folders
+*.pdf
+*.docx
+.vscode
+*.zip
+*.tar
+*.DS_Store

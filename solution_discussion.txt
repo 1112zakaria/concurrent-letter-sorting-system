@@ -1,0 +1,72 @@
+Discussion of How the Program Correctly Solves the Problem
+
+Pseudocode:
+
+def concurrent_sort(char AR[8], int debug_enabled):
+    create shared memory
+    attach shared memory
+    copy AR string to shared memory
+
+    get semaphore for index 2
+    get semaphore for index 4
+
+    fork 3 child processes
+
+    if parent process:
+        is_sorted = false
+        while not is_sorted:
+            P(index 2)
+            P(index 4) 
+            is_sorted = true
+            for letter in shared_memory->letters:
+                if letter > next_letter:
+                    is_sorted = false
+            V(index 2)
+            V(index 4)
+        
+        for pid in child_pids:
+            kill(child_pid, SIGKILL)
+        
+        print original string
+        copy shared memory string to stack memory
+        print output string
+
+        delete semaphore for index 2
+        delete semaphore for index 4
+        detach shared memory
+        delete shared memory
+    else:
+        while true:
+            sort_subset(shared_memory->letters, lower, upper)
+
+
+def sort_subset(char AR[8], int lower, int upper):
+    for i in range(lower, upper+1):
+        int j = i 
+        while (j > lower):
+            if involves index 2:
+                P(index 2)
+            if involves index 4:
+                P(index 4)
+            
+            if AR[j-1] > AR[j]:
+                swap AR[j-1] and AR[j]
+            
+            if involves index 2:
+                V(index 2)
+            if involves index 4:
+                V(index 4)
+            
+            j -= 1
+
+ 
+
+
+
+Correctness Proof:
+
+The function uses insertion sort to sort each subset, so we can
+assume that the sorting function is correct.
+The program uses semaphores to ensure that:
+    - the parent reads the current text
+    - the children dont overwrite common elements

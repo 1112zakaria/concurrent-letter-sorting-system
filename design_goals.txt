@@ -1,0 +1,9 @@
+Design Goals:
+
+- concurrently sort a string of 7 characters
+using 3 child processes
+
+- allow user to enable or disable debug print
+statements
+
+- create a semaphore and shared memory based solution
