@@ -6,7 +6,7 @@
         //idk
     };
 
-    void concurrent_sort(char[8], int);
+    void concurrent_sort(char[8]);
     void sort_subset(char[8],int,int);
     void swap_elements(char[7], int, int);
     int involves_critical_element(int,int);

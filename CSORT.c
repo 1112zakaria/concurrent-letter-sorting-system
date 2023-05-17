@@ -23,7 +23,6 @@ static int lower_sem_id, upper_sem_id;
 static int process_num = 0;
 static pid_t child_pids[3];
 static int lower, upper;
-static int DEBUG_ENABLED;
 
 union semun {
     int val;
@@ -54,19 +53,16 @@ int main() {
         "dggggoo",
         "aaaaaaa"
     };
-    printf("Do you want debug displayed? [Y/N]: ");
-    int enable_debug = (tolower(getchar()) == 'y') ? 1 : 0;
-    printf("\n");
-    getchar();
+
     int i = 0;
     printf("Input string: ");
     scanf("%s", manual_input);
     printf("\n");
-    concurrent_sort(manual_input, enable_debug);
+    concurrent_sort(manual_input);
 
     for (int i=0; i<num_inputs; i++) {
         printf("\n---TESTING INPUT %s---\n", test_inputs[i]);
-        concurrent_sort(test_inputs[i], enable_debug);
+        concurrent_sort(test_inputs[i]);
         printf("Expected output: %s\n", expected_outputs[i]);
         assert(strcmp(test_inputs[i], expected_outputs[i]) == 0);
     }
@@ -78,12 +74,11 @@ int main() {
  * 
  * @param AR    char[7], string of 7 letters
  */
-void concurrent_sort(char AR[8], int enable_debug) {
+void concurrent_sort(char AR[8]) {
     int shmid;
     struct shared_use_st *shared_memory = (void*)0;
     lower = 2;
     upper = 4;
-    DEBUG_ENABLED = enable_debug;
 
     // Get semaphores
     lower_sem_id = semget((key_t)1234, 1, 0666 | IPC_CREAT);
@@ -191,14 +186,16 @@ void sort_subset(char AR[8], int lower, int upper) {
             }
             // Swap AR[j] & A[j-1]
             if (AR[j-1] > AR[j]) {
-                if (DEBUG_ENABLED) {
-                    printf("Process P%d: performed swapping\n", process_num);
-                }
+#ifdef DEBUG_ENABLED
+                printf("Process P%d: performed swapping\n", process_num);
+#endif
                 swap_elements(AR, j-1, j);
             } else {
+#ifdef DEBUG_ENABLED
                 if (DEBUG_ENABLED) {
                     printf("Process P%d: No swapping\n", process_num);
                 }
+#endif
             }
 
             if (involves_lower_crit) {
